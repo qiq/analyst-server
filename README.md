@@ -45,3 +45,15 @@ to find it on the classpath.
 ## Internationalization
 
 In order to add a new interface language to Transport Analyst, first duplicate one of the existing language files in `src/main/resources/messages`, changing the file name suffix to the new language's two-letter code. After translating all the strings in the file, edit `src/main/resources/public/templates/app/app-nav.html`. Duplicate one of the selectLang list entries, changing the data-lang code to match the two-letter code of your new translation file and filling in the localized name of the language (the autoglottonym).
+
+
+## Modifications
+
+* Stormpath is no longer available, account information is faked, so that login information is ignored.
+* fixed javascript error in form submission
+* run:
+ * osm-lib:
+  * mvn exec:java -Dexec.mainClass="com.conveyal.osmlib.VanillaExtract" -Dexec.args="/tmp/abc/def --load /home/qiq/beruna/otp/base/prague_czech-republic.osm.pbf"
+  * mvn exec:java -Dexec.mainClass="com.conveyal.osmlib.VanillaExtract" -Dexec.args="/tmp/abc/def"
+ * mvn package
+ * java -Xmx5G -Duser.country=GB -Duser.language=en -jar target/analyst-server.jar # see https://github.com/conveyal/analyst-server/issues/274
