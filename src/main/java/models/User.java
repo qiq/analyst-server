@@ -135,7 +135,8 @@ public class User implements Serializable {
 
 	/** Get the remaining quota for this user */
 	public long getQuota () {
-		return ledger.getValue(this.groupName);
+		return 10000000;
+		//return ledger.getValue(this.groupName);
 	}
 
 	/**
