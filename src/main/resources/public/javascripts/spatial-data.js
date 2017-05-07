@@ -119,6 +119,7 @@ A.spatialData = {};
 
 		    // pass in hash
 		    form.append($('<input type="hidden" name="location" value="' + window.location.hash + '" />'))
+		    $(document.body).append(form);
 
 		    form.submit()
 
