@@ -47,16 +47,16 @@ public class Authentication extends Controller {
     private static Client stormpathClient;
 
     static {
-        File stormpathConfig = new File(AnalystMain.config.getProperty("auth.stormpath-config"));
+        //File stormpathConfig = new File(AnalystMain.config.getProperty("auth.stormpath-config"));
 
-        if (!stormpathConfig.exists())
-            LOG.error("Stormpath configuration does not exist");
+//        if (!stormpathConfig.exists())
+//            LOG.error("Stormpath configuration does not exist");
 
-        ApiKey key = ApiKeys.builder().setFileLocation(stormpathConfig.getAbsolutePath()).build();
-        stormpathClient = Clients.builder().setApiKey(key).build();
-        Tenant tenant = stormpathClient.getCurrentTenant();
-        ApplicationList apps = tenant.getApplications(Applications.where(Applications.name().eqIgnoreCase(AnalystMain.config.getProperty("auth.stormpath-name"))));
-        stormpathApp = apps.iterator().next();
+//        ApiKey key = ApiKeys.builder().setFileLocation(stormpathConfig.getAbsolutePath()).build();
+//        stormpathClient = Clients.builder().setApiKey(key).build();
+//        Tenant tenant = stormpathClient.getCurrentTenant();
+//        ApplicationList apps = tenant.getApplications(Applications.where(Applications.name().eqIgnoreCase(AnalystMain.config.getProperty("auth.stormpath-name"))));
+//        stormpathApp = apps.iterator().next();
     }
 
     /** used when the stormpath ID site is turned off */
@@ -65,17 +65,17 @@ public class Authentication extends Controller {
         String password = request.queryParams("password");
 
         // authenticate with stormpath
-        AuthenticationRequest req = new UsernamePasswordRequest(username, password);
+//        AuthenticationRequest req = new UsernamePasswordRequest(username, password);
 
         Account account;
-        try {
-            AuthenticationResult res = stormpathApp.authenticateAccount(req);
-            account = res.getAccount();
-            clearCache(account);
-        } catch (ResourceException e) {
-            LOG.warn("Login attempt failed for user {}", username);
-            halt(UNAUTHORIZED, "Invalid username or password");
-        }
+//        try {
+//            AuthenticationResult res = stormpathApp.authenticateAccount(req);
+//            account = res.getAccount();
+//           clearCache(account);
+//        } catch (ResourceException e) {
+//            LOG.warn("Login attempt failed for user {}", username);
+//            halt(UNAUTHORIZED, "Invalid username or password");
+//        }
 
         // create a new session ID, prevents session hijacking
         // but first, make sure a session exists
@@ -87,23 +87,23 @@ public class Authentication extends Controller {
     }
 
     public static Object handleLogin (Request req, Response res) {
-        AccountResult ar = stormpathApp.newIdSiteCallbackHandler(req.raw()).getAccountResult();
-        Account a = ar.getAccount();
+//        AccountResult ar = stormpathApp.newIdSiteCallbackHandler(req.raw()).getAccountResult();
+//        Account a = ar.getAccount();
 
-        if (a == null) {
-            req.session().removeAttribute("username");
-            req.session().invalidate();
-            res.redirect("/login", MOVED_TEMPORARILY);
-            return "";
-        }
+//        if (a == null) {
+//            req.session().removeAttribute("username");
+//            req.session().invalidate();
+//            res.redirect("/login", MOVED_TEMPORARILY);
+//            return "";
+//        }
 
-        clearCache(a);
+//        clearCache(a);
 
         // create a new session, prevents hijacking
         // but first, make sure a session exists
         req.session(true);
         req.raw().changeSessionId();
-        req.session().attribute("username", a.getUsername());
+        req.session().attribute("username", "user");
 
         // TODO track intent through login
         res.redirect("/", MOVED_TEMPORARILY);
@@ -162,23 +162,23 @@ public class Authentication extends Controller {
             return null;
 
         // TODO: use a cache here? let's see what latency is like.
-        AccountList accounts = stormpathApp.getAccounts(Accounts.where(Accounts.username().eqIgnoreCase(username)));
+//        AccountList accounts = stormpathApp.getAccounts(Accounts.where(Accounts.username().eqIgnoreCase(username)));
 
-        if (accounts.getSize() == 0)
-            return null;
+//        if (accounts.getSize() == 0)
+//            return null;
 
-        else if (accounts.getSize() > 1) {
-            LOG.error("Found multiple accounts for username {}", username);
-            return null;
-        }
+//        else if (accounts.getSize() > 1) {
+//            LOG.error("Found multiple accounts for username {}", username);
+//            return null;
+//        }
 
-        else {
-            User u = new User(accounts.iterator().next());
+//        else {
+            User u = new User();
             if (u.groupName == null)
                 LOG.warn("No group specified for user {}", u);
 
             return u;
-        }
+//        }
     }
 
     public static String logout(Request request, Response response)  {

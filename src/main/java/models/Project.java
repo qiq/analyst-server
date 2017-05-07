@@ -42,6 +42,7 @@ public class Project implements Serializable {
 			
 			Date d = new Date();
 			id = HashUtils.hashString("p_" + d.toString());
+id = "project1";
 			
 			LOG.info("created project p " + id);
 		}

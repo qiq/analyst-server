@@ -67,9 +67,10 @@ public class LedgerController extends Controller {
             halt(UNAUTHORIZED, "Must be an admin to view groups");
 
         List<String> ret = new ArrayList<>();
-        for (Group g : Authentication.getAllGroups()) {
-            ret.add(g.getName());
-        }
+ret.add("some group");
+//        for (Group g : Authentication.getAllGroups()) {
+//            ret.add(g.getName());
+//        }
 
         return ret;
     }

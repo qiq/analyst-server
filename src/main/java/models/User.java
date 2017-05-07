@@ -81,6 +81,25 @@ public class User implements Serializable {
 		this.account = account;
 	}
 
+	public User() {
+		this.username = "user";
+		this.email = "some@email";
+		this.name = "Some User";
+		this.active = true;
+		this.admin = true;
+		this.lang = "en";
+		this.groupName = "st";
+		this.logo = "....logo....";
+                ProjectPermissions pp = new ProjectPermissions();
+                pp.projectId = "project1";
+                pp.read = true;
+                pp.write = true;
+                pp.admin = true;
+		this.projectPermissions = new ArrayList<>();
+		this.projectPermissions.add(pp);
+		account = null;
+        }
+
 	/** dummy constructor for use in tests */
 	@VisibleForTesting
 	public User (String username, String groupName) {
@@ -96,9 +115,9 @@ public class User implements Serializable {
 	}
 
 	public void save () {
-		account.getCustomData().put(AnalystMain.config.getProperty("auth.stormpath-name") + "_projectPermissions", projectPermissions);
-		account.getCustomData().put(AnalystMain.config.getProperty("auth.stormpath-name") + "_lang", this.lang);
-		account.save();
+//		account.getCustomData().put(AnalystMain.config.getProperty("auth.stormpath-name") + "_projectPermissions", projectPermissions);
+//		account.getCustomData().put(AnalystMain.config.getProperty("auth.stormpath-name") + "_lang", this.lang);
+//		account.save();
 	}
 
 	public String getLang() {
